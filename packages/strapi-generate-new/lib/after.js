@@ -30,7 +30,7 @@ module.exports = (scope, cb) => {
   const packageJSON = require(path.resolve(scope.rootPath, 'package.json'));
   const strapiRootPath = path.resolve(scope.strapiRoot, '..');
 
-  fs.writeFileSync(path.resolve(scope.rootPath, '.strapirc'), JSON.stringify(uuid()), 'utf8');
+  fs.writeFileSync(path.resolve(scope.rootPath, '.strapirc'), uuid(), 'utf8');
 
   process.chdir(scope.rootPath);
 
