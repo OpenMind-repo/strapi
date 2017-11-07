@@ -40,6 +40,10 @@ module.exports = {
       copy: 'npmignore'
     },
 
+    '.strapirc': {
+      copy: 'strapirc'
+    },
+
     // Copy Markdown files with some information.
     'README.md': {
       template: 'README.md'

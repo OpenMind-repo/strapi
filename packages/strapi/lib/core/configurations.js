@@ -1,6 +1,7 @@
 'use strict';
 
 // Dependencies.
+const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
 const utils = require('../utils');
@@ -48,13 +49,29 @@ module.exports.nested = function() {
         utils.loadConfig.call(this, files).then(resolve).catch(reject);
       });
     }),
+    new Promise((resolve, reject) => {
+      glob('.strapirc', {}, (err, files) => {
+        if (err) {
+          return reject(err);
+        }
+
+        if (files[0]) {
+          setWith(
+            this,
+            'config.uuid',
+            fs.readFileSync(path.resolve(process.cwd(), files[0]), 'utf8')
+          );
+        }
+
+        resolve();
+      });
+    }),
     // Load plugins configurations.
     new Promise((resolve, reject) => {
       setWith(
         this,
         'config.info',
-        require(path.resolve(process.cwd(), 'package.json')),
-        Object
+        require(path.resolve(process.cwd(), 'package.json'))
       );
 
       resolve();

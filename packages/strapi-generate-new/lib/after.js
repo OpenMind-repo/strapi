@@ -13,9 +13,11 @@ const _ = require('lodash');
 const fs = require('fs-extra');
 const npm = require('enpeem');
 const getInstalledPath = require('get-installed-path');
+const uuid = require('uuid/v4');
 
 // Logger.
 const logger = require('strapi-utils').logger;
+
 
 /**
  * Runs after this generator has finished
@@ -27,6 +29,8 @@ const logger = require('strapi-utils').logger;
 module.exports = (scope, cb) => {
   const packageJSON = require(path.resolve(scope.rootPath, 'package.json'));
   const strapiRootPath = path.resolve(scope.strapiRoot, '..');
+
+  fs.writeFileSync(path.resolve(scope.rootPath, '.strapirc'), JSON.stringify(uuid()), 'utf8');
 
   process.chdir(scope.rootPath);
 
